@@ -3,12 +3,12 @@ package tictactoe;
 public class TicTacToeRunner {
     public static void main(String[] args) {
 
-        Game game = new Game();
-        Player playerX = new Player("Player X", Sign.CROSS);
-        Player playerO = new Player("Player O", Sign.NOUGHT);
-
         InputOutput inputOutput = new InputOutput();
-        inputOutput.sayHello();
+        Player playerX = new Player(inputOutput.askForPlayerName(), Sign.CROSS);
+        Player computer = new Player("Computer", Sign.NOUGHT);
+        int boardSize = inputOutput.getBoardSideFromUser(playerX);
+        Game game = new Game(boardSize, boardSize == 10 ? 5 : 3);
+
         inputOutput.displayBoard(game.getTheBoard());
 
         boolean end = false;
@@ -17,18 +17,33 @@ public class TicTacToeRunner {
 
             Sign nextSign = game.checkWhosNext();
 
-            int[] coordinates = inputOutput.getPlayerMove(playerO.getSign().equals(nextSign) ?
-                        playerO : playerX);
-                try {
-                    game.putSignOnTheBoard(nextSign, coordinates[0], coordinates[1]);
-                } catch (Exception e) {
-                    System.out.println("Wrong move, baby! This field is already taken.");
-                } finally {
-                    inputOutput.displayBoard(game.getTheBoard());
+            if (nextSign.equals(playerX.getSign())) {
+                int currentStateOfBoard = game.getNumberOfSignsOnTheBoard(Sign.BLANK);
+                while (currentStateOfBoard == game.getNumberOfSignsOnTheBoard(Sign.BLANK)) {
+                    int[] coordinates = inputOutput.getPlayerMove(playerX, game.getTheBoard().length);
+                    try {
+                        game.putSignOnTheBoard(nextSign, coordinates[0], coordinates[1]);
+                    } catch (Exception e) {
+                        System.out.println("Wrong move, baby! This field is already taken.");
+                    } finally {
+                        inputOutput.displayBoard(game.getTheBoard());
+                    }
                 }
+            } else {
+                inputOutput.saySomething("Computer's move:");
+                game.makeRandomMove(computer.getSign());
+                inputOutput.displayBoard(game.getTheBoard());
+            }
 
-            if (game.checkIfBoardIsFull()) {
+            Sign winigSign = game.checkIfWeHaveAWinner();
+
+            if (game.checkIfBoardIsFull() && winigSign == Sign.BLANK) {
                 System.out.println("Draw! No one wins, or both players are winners :)");
+                end = true;
+            }
+            if (winigSign != Sign.BLANK) {
+                inputOutput.announceWinner(computer.getSign().equals(winigSign) ?
+                        computer : playerX);
                 end = true;
             }
         }

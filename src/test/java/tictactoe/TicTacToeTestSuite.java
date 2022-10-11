@@ -266,7 +266,7 @@ public class TicTacToeTestSuite {
         }
 
         @Test
-        void testXWinsDiagonaL3() {
+        void testXWinsDiagonal3() {
             //Given
             Sign[][] testBoard = {
                     {Sign.BLANK, Sign.BLANK, Sign.CROSS},
@@ -408,15 +408,193 @@ public class TicTacToeTestSuite {
         }
     }
 
-}
+    @Nested
+    @DisplayName("Tests on bigger board")
+    class TestsOnBiggerBoard {
 
-    /*
-    Napisz testy weryfikujące zwycięstwa O w wierszach.
-        Napisz testy weryfikujące zwycięstwa O w kolumnach.
-        Napisz testy weryfikujące zwycięstwa O po przekątnych planszy.
-        Napisz testy weryfikujące zwycięstwa X w wierszach.
-        Napisz testy weryfikujące zwycięstwa X w kolumnach.
-        Napisz testy weryfikujące zwycięstwa X po przekątnych planszy.
-        Napisz testy weryfikujące układy, które prowadzą do remisu.
-        Napisz testy weryfikujące, czy w przypadku błędnie wykonanych ruchów zostanie rzucony odpowiedni wyjątek.
-        */
+        @Test
+        void testWinRowBoard7NumberToWin4() {
+            //Given
+            Sign[][] testBoard = {
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.CROSS, Sign.CROSS, Sign.CROSS, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.NOUGHT, Sign.NOUGHT, Sign.NOUGHT, Sign.NOUGHT, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+            };
+
+            //When
+            Game game = new Game(testBoard, 4);
+
+            //Then
+            assertEquals(game.checkIfWeHaveAWinner(), Sign.NOUGHT);
+        }
+
+        @Test
+        void testWinColumnBoard7NumberToWin4() {
+            //Given
+            Sign[][] testBoard = {
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.CROSS, Sign.CROSS, Sign.CROSS, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.CROSS, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.CROSS, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.NOUGHT, Sign.CROSS, Sign.BLANK, Sign.NOUGHT, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+            };
+
+            //When
+            Game game = new Game(testBoard, 4);
+
+            //Then
+            assertEquals(game.checkIfWeHaveAWinner(), Sign.CROSS);
+        }
+
+        @Test
+        void testWinDiagonalBoard7NumberToWin5() {
+            //Given
+            Sign[][] testBoard = {
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.NOUGHT, Sign.CROSS, Sign.CROSS, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.CROSS, Sign.NOUGHT, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.CROSS, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.NOUGHT, Sign.CROSS, Sign.CROSS, Sign.NOUGHT, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.CROSS, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.CROSS},
+            };
+
+            //When
+            Game game = new Game(testBoard, 5);
+
+            //Then
+            assertEquals(game.checkIfWeHaveAWinner(), Sign.CROSS);
+        }
+
+        @Test
+        void testWinDiagonalBoard7NumberToWin6() {
+            //Given
+            Sign[][] testBoard = {
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.NOUGHT, Sign.BLANK},
+                    {Sign.BLANK, Sign.NOUGHT, Sign.CROSS, Sign.CROSS, Sign.NOUGHT, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.CROSS, Sign.NOUGHT, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.NOUGHT, Sign.CROSS, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.NOUGHT, Sign.NOUGHT, Sign.CROSS, Sign.CROSS, Sign.NOUGHT, Sign.BLANK},
+                    {Sign.NOUGHT, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.CROSS, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.CROSS},
+            };
+
+            //When
+            Game game = new Game(testBoard, 6);
+
+            //Then
+            assertEquals(game.checkIfWeHaveAWinner(), Sign.NOUGHT);
+        }
+
+        @Test
+        void testDrawBoard7NumberToWin5() {
+            //Given
+            Sign[][] testBoard = {
+                    {Sign.NOUGHT, Sign.CROSS, Sign.NOUGHT, Sign.CROSS, Sign.CROSS, Sign.NOUGHT, Sign.NOUGHT},
+                    {Sign.NOUGHT, Sign.NOUGHT, Sign.CROSS, Sign.CROSS, Sign.CROSS, Sign.CROSS, Sign.NOUGHT},
+                    {Sign.CROSS, Sign.CROSS, Sign.CROSS, Sign.NOUGHT, Sign.NOUGHT, Sign.CROSS, Sign.CROSS},
+                    {Sign.CROSS, Sign.NOUGHT, Sign.NOUGHT, Sign.CROSS, Sign.CROSS, Sign.CROSS, Sign.NOUGHT},
+                    {Sign.CROSS, Sign.NOUGHT, Sign.NOUGHT, Sign.CROSS, Sign.CROSS, Sign.NOUGHT, Sign.CROSS},
+                    {Sign.NOUGHT, Sign.CROSS, Sign.CROSS, Sign.NOUGHT, Sign.NOUGHT, Sign.CROSS, Sign.CROSS},
+                    {Sign.CROSS, Sign.NOUGHT, Sign.NOUGHT, Sign.CROSS, Sign.CROSS, Sign.NOUGHT, Sign.NOUGHT},
+            };
+
+            //When
+            Game game = new Game(testBoard, 5);
+
+            //Then
+            assertEquals(game.checkIfWeHaveAWinner(), Sign.BLANK);
+            assertTrue(game.checkIfBoardIsFull());
+        }
+
+        @Test
+        void testPutXonOThrowsExceptionOnBoard7() {
+            //Given
+            Sign[][] testBoard = {
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.NOUGHT, Sign.BLANK},
+                    {Sign.BLANK, Sign.NOUGHT, Sign.CROSS, Sign.CROSS, Sign.NOUGHT, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.CROSS, Sign.NOUGHT, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.NOUGHT, Sign.CROSS, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.NOUGHT, Sign.NOUGHT, Sign.CROSS, Sign.CROSS, Sign.NOUGHT, Sign.BLANK},
+                    {Sign.NOUGHT, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.CROSS, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.CROSS},
+            };
+
+            //When
+            Game game = new Game(testBoard,6);
+
+            //Then
+            assertThrows(Exception.class, () -> game.putSignOnTheBoard(Sign.CROSS, 6, 7));
+        }
+    }
+
+    @Nested
+    @DisplayName("Tests for random move")
+    class TestsForMakeRandomMove {
+
+        @Test
+        void testMakeRandomMoveWhenManyBlanks() {
+            //Given
+            Sign[][] testBoard = {
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.NOUGHT, Sign.BLANK},
+                    {Sign.BLANK, Sign.NOUGHT, Sign.CROSS, Sign.CROSS, Sign.NOUGHT, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.CROSS, Sign.NOUGHT, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.NOUGHT, Sign.CROSS, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.NOUGHT, Sign.NOUGHT, Sign.CROSS, Sign.CROSS, Sign.NOUGHT, Sign.BLANK},
+                    {Sign.NOUGHT, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.CROSS, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.CROSS},
+            };
+            Game game = new Game(testBoard,6);
+
+            //When
+            game.makeRandomMove(Sign.CROSS);
+
+            //Then
+            assertEquals(31, game.getNumberOfSignsOnTheBoard(Sign.BLANK));
+            assertEquals(9, game.getNumberOfSignsOnTheBoard(Sign.CROSS));
+        }
+
+        @Test
+        void testMakeRandomMoveWhenOnlyOneBlank() {
+            //Given
+            Sign[][] testBoard = {
+                    {Sign.NOUGHT, Sign.CROSS, Sign.NOUGHT, Sign.CROSS, Sign.CROSS, Sign.NOUGHT, Sign.NOUGHT},
+                    {Sign.NOUGHT, Sign.NOUGHT, Sign.CROSS, Sign.CROSS, Sign.CROSS, Sign.CROSS, Sign.NOUGHT},
+                    {Sign.CROSS, Sign.CROSS, Sign.CROSS, Sign.NOUGHT, Sign.NOUGHT, Sign.CROSS, Sign.CROSS},
+                    {Sign.CROSS, Sign.NOUGHT, Sign.NOUGHT, Sign.CROSS, Sign.CROSS, Sign.CROSS, Sign.NOUGHT},
+                    {Sign.CROSS, Sign.NOUGHT, Sign.NOUGHT, Sign.CROSS, Sign.CROSS, Sign.NOUGHT, Sign.CROSS},
+                    {Sign.NOUGHT, Sign.BLANK, Sign.CROSS, Sign.NOUGHT, Sign.NOUGHT, Sign.CROSS, Sign.CROSS},
+                    {Sign.CROSS, Sign.NOUGHT, Sign.NOUGHT, Sign.CROSS, Sign.CROSS, Sign.NOUGHT, Sign.NOUGHT},
+            };
+            Game game = new Game(testBoard,6);
+
+            //When
+            game.makeRandomMove(Sign.NOUGHT);
+
+            //Then
+            assertEquals(0, game.getNumberOfSignsOnTheBoard(Sign.BLANK));
+            assertEquals(23, game.getNumberOfSignsOnTheBoard(Sign.NOUGHT));
+            assertTrue(game.checkIfBoardIsFull());
+        }
+
+        @Test
+        void testMakeRandomMoveWhenEmptyBoard() {
+            //Given
+            Game game = new Game(10, 5);
+
+            //When
+            game.makeRandomMove(Sign.NOUGHT);
+
+            //Then
+            assertEquals(99, game.getNumberOfSignsOnTheBoard(Sign.BLANK));
+            assertEquals(1, game.getNumberOfSignsOnTheBoard(Sign.NOUGHT));
+        }
+    }
+
+}

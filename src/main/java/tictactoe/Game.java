@@ -3,6 +3,7 @@ package tictactoe;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class Game {
 
@@ -20,14 +21,25 @@ public class Game {
         this.numberOfSignsToWin = 3;
     }
 
-    public void putSignOnTheBoard (Sign sign, int row, int column) throws Exception {
-        if (theBoard[row - 1][column - 1] == Sign.BLANK) {
-            theBoard[row - 1][column - 1] = sign;
-        } else throw new Exception();
+    public Game(Sign[][] theBoard, int numberOfSignsToWin) {
+        this.theBoard = theBoard;
+        this.numberOfSignsToWin = numberOfSignsToWin;
+    }
+
+    public Game(int boardSize, int numberOfSignsToWin) {
+        this.numberOfSignsToWin = numberOfSignsToWin;
+        createEmptyBoard(boardSize);
+
+    }
+
+    public void putSignOnTheBoard (Sign sign, int row, int column) throws OccupiedFieldException {
+        if (theBoard[row][column] == Sign.BLANK) {
+            theBoard[row][column] = sign;
+        } else throw new OccupiedFieldException("Attempt to put a sign on a non-blank field.");
     }
 
     public Sign getSignFromTheBoard (int row, int column) {
-        return theBoard[row - 1][column - 1];
+        return theBoard[row][column];
     }
 
     private void createEmptyBoard (int size) {
@@ -44,23 +56,20 @@ public class Game {
     }
 
     public boolean checkIfBoardIsFull () {
-        long blanks = Arrays.stream(theBoard)
+        return getNumberOfSignsOnTheBoard(Sign.BLANK) == 0;
+    }
+
+    public int getNumberOfSignsOnTheBoard(Sign sign) {
+        long count = Arrays.stream(theBoard)
                 .flatMap(Arrays::stream)
-                .filter(sign -> sign.equals(Sign.BLANK))
+                .filter(currentSign -> currentSign.equals(sign))
                 .count();
-        return blanks == 0;
+        return (int) count;
     }
 
     public Sign checkWhosNext() {
-        long sumOfX = Arrays.stream(theBoard)
-                .flatMap(Arrays::stream)
-                .filter(sign -> sign.equals(Sign.CROSS))
-                .count();
-        long sumOfO = Arrays.stream(theBoard)
-                .flatMap(Arrays::stream)
-                .filter(sign -> sign.equals(Sign.NOUGHT))
-                .count();
-        return sumOfX > sumOfO ? Sign.NOUGHT : Sign.CROSS;
+        return getNumberOfSignsOnTheBoard(Sign.CROSS) > getNumberOfSignsOnTheBoard(Sign.NOUGHT) ?
+                Sign.NOUGHT : Sign.CROSS;
     }
 
     public Sign checkIfWeHaveAWinner() {
@@ -83,8 +92,33 @@ public class Game {
                 return result;
             }
         }
+        //Check diagonals left to right downward
+        for (int column = numberOfSignsToWin - theBoard.length; column <= theBoard.length - numberOfSignsToWin; column++){
+            List<Sign> signsFromDiagonalLeftToRight = new ArrayList<>();
+            for (int row = 0; row < theBoard.length; row++) {
+                if (column >= 0 && row + column < theBoard.length) {
+                    signsFromDiagonalLeftToRight.add(theBoard[row][row + column]);
+                }
+            }
+            Sign result = checkIfContainsSignsToWin(signsFromDiagonalLeftToRight);
+            if (result != Sign.BLANK) {
+                return result;
+            }
+        }
+        //Check diagonals right to left downward
+        for (int column = theBoard.length + numberOfSignsToWin - 1; column > theBoard.length - numberOfSignsToWin; column--) {
+            List<Sign> signsFromDiagonalRightToLeft = new ArrayList<>();
+            for (int row = 0; row < theBoard.length; row++) {
+                if (column < theBoard.length && column - row >= 0) {
+                    signsFromDiagonalRightToLeft.add(theBoard[row][column - row]);
+                }
+            }
+            Sign result = checkIfContainsSignsToWin((signsFromDiagonalRightToLeft));
+            if (result != Sign.BLANK) {
+                return result;
+            }
+        }
 
-        //temporarily return BLANK
         return Sign.BLANK;
     }
 
@@ -96,21 +130,47 @@ public class Game {
         int count = 0;
         Sign theSign = Sign.BLANK;
 
-        for (Sign signFromList: signList) {
-            if (signFromList.equals(Sign.BLANK)){
+        for (Sign signFromTheList: signList) {
+            if (signFromTheList.equals(Sign.BLANK)){
                 count = 0;
                 theSign = Sign.BLANK;
-            } else if (signFromList.equals(theSign)) {
+            } else if (signFromTheList.equals(theSign)) {
                 count ++;
                 if (count == numberOfSignsToWin) {
                     return theSign;
                 }
             } else {
-                theSign = signFromList;
+                theSign = signFromTheList;
                 count = 1;
             }
         }
 
         return Sign.BLANK;
+    }
+
+    public void makeRandomMove (Sign sign) {
+        List<int[]> listOfBlankFields = getAllBlankFields();
+        Random generator = new Random();
+        int coordinatesIndex = generator.nextInt(listOfBlankFields.size());
+
+        try {
+            putSignOnTheBoard(sign, listOfBlankFields.get(coordinatesIndex)[0], listOfBlankFields.get(coordinatesIndex)[1]);
+        } catch (Exception e) {
+            System.out.println("Error. Computer just tried to put a sign on an occupied field.");
+            System.exit(-1);
+        }
+    }
+
+    private List<int[]> getAllBlankFields() {
+        List<int[]> blankFieldsList = new ArrayList<>();
+        for (int row = 0; row < theBoard.length; row++) {
+            for (int column = 0; column < theBoard.length; column++) {
+                if (getSignFromTheBoard(row,column).equals(Sign.BLANK)) {
+                    int[] coordinates = new int[] {row, column};
+                    blankFieldsList.add(coordinates);
+                }
+            }
+        }
+        return blankFieldsList;
     }
 }

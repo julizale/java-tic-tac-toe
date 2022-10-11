@@ -18,7 +18,7 @@ public class InputOutput {
         return playerName;
     }
 
-    public char getUserInput (String message, String charactersAllowed) {
+    private char getUserInput (String message, String charactersAllowed) {
         System.out.println(message);
         char inputChar = '!';
         while (charactersAllowed.indexOf(inputChar) == -1) {
@@ -39,15 +39,48 @@ public class InputOutput {
         }
     }
 
-    public int[] getPlayerMove(Player player) {
-        char row = getUserInput(player.getName() + ", what's Your move? Pick a row (1-3):",
-                "123");
-        char column = getUserInput("Good. Now please pick a column (1-3):",
-                "123");
-        return new int[] {Character.getNumericValue(row), Character.getNumericValue(column)};
+    public int getPositiveIntegerFromPlayer(int upperBound, String message) {
+        int number;
+        do {
+            System.out.println(message);
+            while (!scanner.hasNextInt()) {
+                System.out.println("Please type a numeric value!");
+                scanner.next();
+            }
+            number = scanner.nextInt();
+        } while (number <= 0 || number > upperBound);
+        return number;
+    }
+
+    public int[] getPlayerMove(Player player, int boardSize) {
+        int row = getPositiveIntegerFromPlayer(boardSize, player.getName() + ", Your move. Please pick a row.") - 1;
+        int column = getPositiveIntegerFromPlayer(boardSize, "Now pick a column.") - 1;
+        return new int[] {row, column};
     }
 
     public void sayHello() {
         System.out.println("Hello. Welcome to Tic Tac Toe Game");
+    }
+
+    public void announceWinner (Player player) {
+        if (player.getName().equals("Computer")) {
+            System.out.println("Computer wins.");
+        } else {
+            System.out.println("Congratulations, " + player.getName() + "! You win!");
+        }
+    }
+
+    public void saySomething (String string) {
+        System.out.println(string);
+    }
+
+    public int getBoardSideFromUser (Player player) {
+        System.out.println("Welcome to TicTacToe Game.");
+        char choice = getUserInput(player.getName() + ", do You want to play on small(3x3) or big(10x10) board? (b/s)",
+                "sSbB");
+        if (choice == 's' || choice == 'S') {
+            return 3;
+        }
+        return 10;
     }
 }
