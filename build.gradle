@@ -1,12 +1,20 @@
 plugins {
     id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.10'
 }
 
 group 'tictactoe'
 version '1.0-SNAPSHOT'
+mainClassName = 'tictactoe.TicTacToeGUIRunner'
 
 repositories {
     mavenCentral()
+}
+
+javafx {
+    version = "19"
+    modules = [ 'javafx.controls' ]
 }
 
 dependencies {

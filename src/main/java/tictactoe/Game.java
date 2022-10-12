@@ -96,7 +96,7 @@ public class Game {
         for (int column = numberOfSignsToWin - theBoard.length; column <= theBoard.length - numberOfSignsToWin; column++){
             List<Sign> signsFromDiagonalLeftToRight = new ArrayList<>();
             for (int row = 0; row < theBoard.length; row++) {
-                if (column >= 0 && row + column < theBoard.length) {
+                if (column + row >= 0 && row + column < theBoard.length) {
                     signsFromDiagonalLeftToRight.add(theBoard[row][row + column]);
                 }
             }
@@ -106,10 +106,10 @@ public class Game {
             }
         }
         //Check diagonals right to left downward
-        for (int column = theBoard.length + numberOfSignsToWin - 1; column > theBoard.length - numberOfSignsToWin; column--) {
+        for (int column = theBoard.length + numberOfSignsToWin; column >= numberOfSignsToWin - 1; column--) {
             List<Sign> signsFromDiagonalRightToLeft = new ArrayList<>();
             for (int row = 0; row < theBoard.length; row++) {
-                if (column < theBoard.length && column - row >= 0) {
+                if (column - row < theBoard.length && column - row >= 0) {
                     signsFromDiagonalRightToLeft.add(theBoard[row][column - row]);
                 }
             }
@@ -123,6 +123,7 @@ public class Game {
     }
 
     private Sign checkIfContainsSignsToWin (List<Sign> signList) {
+
         if (signList.size() < numberOfSignsToWin) {
             return Sign.BLANK;
         }
@@ -148,17 +149,18 @@ public class Game {
         return Sign.BLANK;
     }
 
-    public void makeRandomMove (Sign sign) {
+    public int[] makeRandomMove (Sign sign) {
         List<int[]> listOfBlankFields = getAllBlankFields();
         Random generator = new Random();
-        int coordinatesIndex = generator.nextInt(listOfBlankFields.size());
 
+        int coordinatesIndex = generator.nextInt(listOfBlankFields.size());
         try {
             putSignOnTheBoard(sign, listOfBlankFields.get(coordinatesIndex)[0], listOfBlankFields.get(coordinatesIndex)[1]);
-        } catch (Exception e) {
-            System.out.println("Error. Computer just tried to put a sign on an occupied field.");
+        } catch (OccupiedFieldException e) {
+            System.out.println("Error. Computer just tried to put a sign on an occupied field:" + e);
             System.exit(-1);
         }
+        return listOfBlankFields.get(coordinatesIndex);
     }
 
     private List<int[]> getAllBlankFields() {
@@ -173,4 +175,5 @@ public class Game {
         }
         return blankFieldsList;
     }
+
 }

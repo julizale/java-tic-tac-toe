@@ -2,7 +2,7 @@ package tictactoe;
 
 import java.util.Scanner;
 
-public class InputOutput {
+public class InputOutputConsole {
 
     private final Scanner scanner = new Scanner(System.in);
 

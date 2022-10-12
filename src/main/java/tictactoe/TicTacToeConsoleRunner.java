@@ -1,9 +1,9 @@
 package tictactoe;
 
-public class TicTacToeRunner {
+public class TicTacToeConsoleRunner {
     public static void main(String[] args) {
 
-        InputOutput inputOutput = new InputOutput();
+        InputOutputConsole inputOutput = new InputOutputConsole();
         Player playerX = new Player(inputOutput.askForPlayerName(), Sign.CROSS);
         Player computer = new Player("Computer", Sign.NOUGHT);
         int boardSize = inputOutput.getBoardSideFromUser(playerX);

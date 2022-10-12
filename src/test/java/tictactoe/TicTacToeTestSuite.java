@@ -473,6 +473,46 @@ public class TicTacToeTestSuite {
         }
 
         @Test
+        void testWinLowerDiagonalLeftToRightBoard7NumberToWin5() {
+            //Given
+            Sign[][] testBoard = {
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.CROSS, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.CROSS, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.CROSS, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.CROSS, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.CROSS, Sign.BLANK, Sign.BLANK},
+            };
+
+            //When
+            Game game = new Game(testBoard, 5);
+
+            //Then
+            assertEquals(game.checkIfWeHaveAWinner(), Sign.CROSS);
+        }
+
+        @Test
+        void testWinLowerDiagonalRightToLeftBoard7NumberToWin5() {
+            //Given
+            Sign[][] testBoard = {
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.NOUGHT},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.NOUGHT, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.NOUGHT, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.NOUGHT, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.NOUGHT, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+            };
+
+            //When
+            Game game = new Game(testBoard, 5);
+
+            //Then
+            assertEquals(game.checkIfWeHaveAWinner(), Sign.NOUGHT);
+        }
+
+        @Test
         void testWinDiagonalBoard7NumberToWin6() {
             //Given
             Sign[][] testBoard = {
@@ -594,6 +634,95 @@ public class TicTacToeTestSuite {
             //Then
             assertEquals(99, game.getNumberOfSignsOnTheBoard(Sign.BLANK));
             assertEquals(1, game.getNumberOfSignsOnTheBoard(Sign.NOUGHT));
+        }
+    }
+
+    @Nested
+    @DisplayName("Tests for wins corners")
+    class TestsForWinsInCorners {
+
+        @Test
+        void testWinUpperLeftCorner() {
+            //Given
+            Sign[][] testBoard = {
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.NOUGHT, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.NOUGHT, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.NOUGHT, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.NOUGHT, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+            };
+
+            //When
+            Game game = new Game(testBoard, 4);
+
+            //Then
+            assertEquals(game.checkIfWeHaveAWinner(), Sign.NOUGHT);
+        }
+
+        @Test
+        void testWinUpperRightCorner() {
+            //Given
+            Sign[][] testBoard = {
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.NOUGHT, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.NOUGHT, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.NOUGHT, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.NOUGHT},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+            };
+
+            //When
+            Game game = new Game(testBoard, 4);
+
+            //Then
+            assertEquals(game.checkIfWeHaveAWinner(), Sign.NOUGHT);
+        }
+
+        @Test
+        void testWinLowerLeftCorner() {
+            //Given
+            Sign[][] testBoard = {
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.CROSS, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.CROSS, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.CROSS, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.CROSS, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+            };
+
+            //When
+            Game game = new Game(testBoard, 4);
+
+            //Then
+            assertEquals(game.checkIfWeHaveAWinner(), Sign.CROSS);
+        }
+
+        @Test
+        void testWinLowerRightCorner() {
+            //Given
+            Sign[][] testBoard = {
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.CROSS},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.CROSS, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.CROSS, Sign.BLANK, Sign.BLANK},
+                    {Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.BLANK, Sign.CROSS, Sign.BLANK, Sign.BLANK, Sign.BLANK},
+            };
+
+            //When
+            Game game = new Game(testBoard, 4);
+
+            //Then
+            assertEquals(game.checkIfWeHaveAWinner(), Sign.CROSS);
         }
     }
 
