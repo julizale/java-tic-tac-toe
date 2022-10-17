@@ -2,12 +2,14 @@ package tictactoe;
 
 public class Player {
 
-    private String name;
-    private Sign sign;
+    private final String name;
+    private final Sign sign;
+    private int gamesWon;
 
-    public Player(String name, Sign sign) {
+    public Player(final String name, final Sign sign) {
         this.name = name;
         this.sign = sign;
+        gamesWon = 0;
     }
 
     public String getName() {
@@ -16,5 +18,13 @@ public class Player {
 
     public Sign getSign() {
         return sign;
+    }
+
+    public int getGamesWon() {
+        return gamesWon;
+    }
+
+    public void setGamesWon(int gamesWon) {
+        this.gamesWon = gamesWon;
     }
 }

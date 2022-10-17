@@ -14,12 +14,5 @@ public enum Sign {
         };
     }
 
-    public String imagePathAndName() {
-        return switch (this) {
-            case BLANK -> "file:src/main/resources/signBLANK.png";
-            case CROSS -> "file:src/main/resources/signCROSS.png";
-            case NOUGHT -> "file:src/main/resources/signNOUGHT.png";
-        };
-    }
 
 }

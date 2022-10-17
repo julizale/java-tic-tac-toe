@@ -1,20 +1,15 @@
 package tictactoe;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class Game {
+public class Game implements Serializable {
 
-    //private Map<Character, List<FieldContent>> theBoard;
     private Sign[][] theBoard;
-    private int numberOfSignsToWin;
-
-    public Game() {
-        createEmptyBoard(3);
-        this.numberOfSignsToWin = 3;
-    }
+    private final int numberOfSignsToWin;
 
     public Game(Sign[][] theBoard) {
         this.theBoard = theBoard;
@@ -29,7 +24,6 @@ public class Game {
     public Game(int boardSize, int numberOfSignsToWin) {
         this.numberOfSignsToWin = numberOfSignsToWin;
         createEmptyBoard(boardSize);
-
     }
 
     public void putSignOnTheBoard (Sign sign, int row, int column) throws OccupiedFieldException {
@@ -106,7 +100,7 @@ public class Game {
             }
         }
         //Check diagonals right to left downward
-        for (int column = theBoard.length + numberOfSignsToWin; column >= numberOfSignsToWin - 1; column--) {
+        for (int column = 2 * theBoard.length - numberOfSignsToWin - 1; column >= numberOfSignsToWin - 1; column--) {
             List<Sign> signsFromDiagonalRightToLeft = new ArrayList<>();
             for (int row = 0; row < theBoard.length; row++) {
                 if (column - row < theBoard.length && column - row >= 0) {
@@ -121,6 +115,8 @@ public class Game {
 
         return Sign.BLANK;
     }
+
+
 
     private Sign checkIfContainsSignsToWin (List<Sign> signList) {
 

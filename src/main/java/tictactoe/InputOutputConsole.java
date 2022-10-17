@@ -58,10 +58,6 @@ public class InputOutputConsole {
         return new int[] {row, column};
     }
 
-    public void sayHello() {
-        System.out.println("Hello. Welcome to Tic Tac Toe Game");
-    }
-
     public void announceWinner (Player player) {
         if (player.getName().equals("Computer")) {
             System.out.println("Computer wins.");
