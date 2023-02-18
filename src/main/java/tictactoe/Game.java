@@ -66,6 +66,79 @@ public class Game implements Serializable {
                 Sign.NOUGHT : Sign.CROSS;
     }
 
+/*    private int[] findLongestSequenceOfXOnTheBoard() {
+        //return coordinates of first and last
+
+
+        //Check every column
+        int[] longestSequenceColumns = {0, -1, -1}; // {x of first, y of first, x of last, y of last}
+        for (int column = 0; column < theBoard.length; column++) {
+            List<Sign> signsFromSingleColumn = new ArrayList<>();
+            for (Sign[] signs : theBoard) {
+                signsFromSingleColumn.add(signs[column]);
+            }
+            int[] tempResult = findLongestSignSequence(signsFromSingleColumn, Sign.CROSS);
+            if (longestSequenceColumns[0] < tempResult[0]) {
+                longestSequenceColumns[0] = tempResult[0];
+                longestSequenceColumns[1] = tempResult[1];
+                longestSequenceColumns[2] = tempResult[2];
+            }
+        }
+        return result;
+    }
+    *//*public int[] makeNotSoRandomMove() {
+
+        int[] xSequence = findLongestSequenceOfXOnTheBoard();
+        //check if row or column or diagonal
+
+        *//**//*List<int[]> listOfBlankFields = getAllBlankFields();
+        Random generator = new Random();
+
+        int coordinatesIndex = generator.nextInt(listOfBlankFields.size());
+        try {
+            putSignOnTheBoard(sign, listOfBlankFields.get(coordinatesIndex)[0], listOfBlankFields.get(coordinatesIndex)[1]);
+        } catch (OccupiedFieldException e) {
+            System.out.println("Error. Computer just tried to put a sign on an occupied field:" + e);
+            System.exit(-1);
+        }
+        return listOfBlankFields.get(coordinatesIndex);*//**//*
+    }*/
+    public int[] findLongestSignSequence(List<Sign> signList, Sign theSign) {
+
+        int count = 0;
+        int posLast = -1;
+        int posFirst = -1;
+        int[] result = {count, posFirst, posLast};
+        int[] tempResult = {count, posFirst, posLast};
+
+        for (int i = 0; i < signList.size(); i++) {
+            if (signList.get(i).equals(theSign)) {
+                count++;
+                posLast = i;
+                if (posFirst < 0) {
+                    posFirst = i;
+                }
+                tempResult[0] = count;
+                tempResult[1] = posFirst;
+                tempResult[2] = posLast;
+            } else {
+                if (result[0] < tempResult[0]) {
+                    result[0] = tempResult[0];
+                    result[1] = tempResult[1];
+                    result[2] = tempResult[2];
+                }
+                count = 0;
+                posFirst = -1;
+            }
+        }
+        if (result[0] < tempResult[0]) {
+            result[0] = tempResult[0];
+            result[1] = tempResult[1];
+            result[2] = tempResult[2];
+        }
+        return result;
+    }
+
     public Sign checkIfWeHaveAWinner() {
         //Check every row
         for (Sign[] row: theBoard) {
@@ -115,8 +188,6 @@ public class Game implements Serializable {
 
         return Sign.BLANK;
     }
-
-
 
     private Sign checkIfContainsSignsToWin (List<Sign> signList) {
 

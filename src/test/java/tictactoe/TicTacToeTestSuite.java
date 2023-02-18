@@ -6,8 +6,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-public class TicTacToeTestSuite {
+import java.util.Arrays;
+import java.util.List;
 
+public class TicTacToeTestSuite {
 
     @Nested
     @DisplayName("Tests for Wins in Rows")
@@ -726,4 +728,157 @@ public class TicTacToeTestSuite {
         }
     }
 
+    @Nested
+    @DisplayName("Tests for finding sequences of signs")
+    class TestsForFindingSignSequence {
+
+        @Test
+        void testFindLongestSignSequenceOneSequence() {
+            //Given
+            Game game = new Game(3,3);
+            List<Sign> signList = Arrays.asList(Sign.BLANK, Sign.NOUGHT, Sign.NOUGHT,
+                    Sign.CROSS, Sign.CROSS, Sign.CROSS, Sign.BLANK);
+
+            //When
+            int[] result = game.findLongestSignSequence(signList, Sign.CROSS);
+
+            //Then
+            assertEquals(3, result[0]);
+            assertEquals(3, result[1]);
+            assertEquals(5, result[2]);
+        }
+
+        @Test
+        void testFindLongestSignSequenceTwoSequencesLongerFirst() {
+            //Given
+            Game game = new Game(3,3);
+            List<Sign> signList = Arrays.asList(Sign.CROSS, Sign.CROSS, Sign.CROSS,
+                    Sign.BLANK, Sign.CROSS, Sign.CROSS, Sign.BLANK);
+
+            //When
+            int[] result = game.findLongestSignSequence(signList, Sign.CROSS);
+
+            //Then
+            assertEquals(3, result[0]);
+            assertEquals(0, result[1]);
+            assertEquals(2, result[2]);
+        }
+
+        @Test
+        void testFindLongestSignSequenceTwoSequencesLongerSecond() {
+            //Given
+            Game game = new Game(3,3);
+            List<Sign> signList = Arrays.asList(Sign.NOUGHT, Sign.CROSS, Sign.CROSS,
+                    Sign.BLANK, Sign.CROSS, Sign.CROSS, Sign.CROSS);
+
+            //When
+            int[] result = game.findLongestSignSequence(signList, Sign.CROSS);
+
+            //Then
+            assertEquals(3, result[0]);
+            assertEquals(4, result[1]);
+            assertEquals(6, result[2]);
+        }
+    }
+
+    @Nested
+    @DisplayName("Tests for SignSequence get length")
+    class TestsForSignSequenceGetLength {
+
+        @Test
+        void testGetLengthHorizontalForward() {
+            //Given
+            SignSequence sequence = new SignSequence(Sign.CROSS, 3,0,3,6);
+
+            //When
+            int length = sequence.getLength();
+
+            //Then
+            assertEquals(7, length);
+        }
+
+        @Test
+        void testGetLengthHorizontalBackward() {
+            //Given
+            SignSequence sequence = new SignSequence(Sign.CROSS, 3,6,3,0);
+
+            //When
+            int length = sequence.getLength();
+
+            //Then
+            assertEquals(7, length);
+        }
+
+        @Test
+        void testGetLengthVerticalForward() {
+            //Given
+            SignSequence sequence = new SignSequence(Sign.CROSS, 3,5,1,5);
+
+            //When
+            int length = sequence.getLength();
+
+            //Then
+            assertEquals(3, length);
+        }
+
+        @Test
+        void testGetLengthVerticalBackward() {
+            //Given
+            SignSequence sequence = new SignSequence(Sign.CROSS, 1,5,3,5);
+
+            //When
+            int length = sequence.getLength();
+
+            //Then
+            assertEquals(3, length);
+        }
+
+        @Test
+        void testGetLengthDiagonalLeftToRightUpward() {
+            //Given
+            SignSequence sequence = new SignSequence(Sign.CROSS, 3,1,0,4);
+
+            //When
+            int length = sequence.getLength();
+
+            //Then
+            assertEquals(4, length);
+        }
+
+        @Test
+        void testGetLengthDiagonalLeftToRightDownward() {
+            //Given
+            SignSequence sequence = new SignSequence(Sign.CROSS, 0,0,3,3);
+
+            //When
+            int length = sequence.getLength();
+
+            //Then
+            assertEquals(4, length);
+        }
+
+        @Test
+        void testGetLengthDiagonalRightToLeftUpward() {
+            //Given
+            SignSequence sequence = new SignSequence(Sign.CROSS, 3,6,1,4);
+
+            //When
+            int length = sequence.getLength();
+
+            //Then
+            assertEquals(3, length);
+        }
+
+        @Test
+        void testGetLengthDiagonalRightToLeftDownward() {
+            //Given
+            SignSequence sequence = new SignSequence(Sign.CROSS, 0,7,3,4);
+
+            //When
+            int length = sequence.getLength();
+
+            //Then
+            assertEquals(4, length);
+        }
+    }
 }

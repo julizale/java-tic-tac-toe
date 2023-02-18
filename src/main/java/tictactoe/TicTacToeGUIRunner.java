@@ -17,9 +17,9 @@ import java.util.Optional;
 public class TicTacToeGUIRunner extends Application {
 
     private final Image board10Image = new Image("file:src/main/resources/TicTacToe10Board.jpg");
-    private final Image signCROSS = new Image("file:src/main/resources/signCROSS.png");
-    private final Image signNOUGHT = new Image("file:src/main/resources/signNOUGHT.png");
-    private final Image signBLANK = new Image("file:src/main/resources/signBLANK.png");
+    private final Image signCROSS10 = new Image("file:src/main/resources/signCROSS.png");
+    private final Image signNOUGHT10 = new Image("file:src/main/resources/signNOUGHT.png");
+    private final Image signBLANK10 = new Image("file:src/main/resources/signBLANK.png");
     private final Image board3Image = new Image("file:src/main/resources/TicTacToe3Board.jpg");
     private final Image signCROSS3 = new Image("file:src/main/resources/signCROSS100px.png");
     private final Image signNOUGHT3 = new Image("file:src/main/resources/signNOUGHT100px.png");
@@ -49,6 +49,43 @@ public class TicTacToeGUIRunner extends Application {
         startGame();
     }
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    private void startGame() {
+        if (computer.getGamesWon() != 0 || player.getGamesWon() != 0 || gameIsOn) {
+            if (!confirmAction("New game", "Do You really want to start new game?")) {
+                return;
+            }
+        }
+
+        computer = new Player("Computer", Sign.NOUGHT);
+        player = new Player(askForPlayerName(), Sign.CROSS);
+        numberOfRoundsToWin = askForNumberOfRounds();
+
+        Alert alert = new Alert(Alert.AlertType.NONE);
+        alert.setTitle("New Game");
+        alert.setHeaderText("Choose size of the board.");
+        Image logo = new Image("file:src/main/resources/TicTacToeLogo.png");
+        ImageView imageView = new ImageView(logo);
+        alert.setGraphic(imageView);
+
+        ButtonType buttonType3x3 = new ButtonType("3x3");
+        ButtonType buttonType10x10 = new ButtonType("10x10");
+
+        alert.getButtonTypes().setAll(buttonType3x3, buttonType10x10);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent()) {
+            if (result.get().equals(buttonType3x3)) {
+                startGame3x3();
+            } else {
+                startGame10x10();
+            }
+        }
+    }
+
     private void startGame3x3 () {
 
         gameIsOn = false;
@@ -62,8 +99,8 @@ public class TicTacToeGUIRunner extends Application {
         player = new Player(saveGameData.playerName(), Sign.CROSS);
         computer.setGamesWon(saveGameData.computerRoundsWon());
         player.setGamesWon(saveGameData.playerRoundsWon());
-        numberOfRoundsToWin = (saveGameData.roundsToWin());
-        game = (saveGameData.game());
+        numberOfRoundsToWin = saveGameData.roundsToWin();
+        game = saveGameData.game();
 
         gameIsOn = game.getNumberOfSignsOnTheBoard(Sign.BLANK) != 9;
 
@@ -92,6 +129,7 @@ public class TicTacToeGUIRunner extends Application {
     }
 
     private void handleMousePress (ImageView img) {
+
         int boardSize = grid.getColumnCount();
         int imgRow = GridPane.getRowIndex(img);
         int imgColumn = GridPane.getColumnIndex(img);
@@ -104,11 +142,11 @@ public class TicTacToeGUIRunner extends Application {
         }
         if (fieldWasBlank) {
             gameIsOn = true;
-            img.setImage(boardSize == 10 ? signCROSS : signCROSS3);
+            img.setImage(boardSize == 10 ? signCROSS10 : signCROSS3);
             if (game.checkIfWeHaveAWinner() == Sign.BLANK) {
                 if (!game.checkIfBoardIsFull()) {
                     int[] coordinates = game.makeRandomMove(Sign.NOUGHT);
-                    grid.add(new ImageView(boardSize == 10 ? signNOUGHT : signNOUGHT3),
+                    grid.add(new ImageView(boardSize == 10 ? signNOUGHT10 : signNOUGHT3),
                             coordinates[1], coordinates[0]);
                     if (game.checkIfWeHaveAWinner() == Sign.NOUGHT) {
                         announceWinner(Sign.NOUGHT);
@@ -156,7 +194,7 @@ public class TicTacToeGUIRunner extends Application {
         } else startGame10x10();
     }
 
-    private void tryQuitGame() {
+    private void quitGame() {
         if (gameIsOn && !confirmAction("Quit game",
                 "Do You really want to quit game?")) {
             return;
@@ -171,10 +209,6 @@ public class TicTacToeGUIRunner extends Application {
 
         Optional<ButtonType> result = alert.showAndWait();
         return (result.isPresent()) && (result.get() == ButtonType.OK);
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 
     private void createMenu () {
@@ -192,7 +226,7 @@ public class TicTacToeGUIRunner extends Application {
         menuItemNewGame.setOnAction(e -> startGame());
         menuItemSaveGame.setOnAction(e -> saveGame());
         menuItemLoadGame.setOnAction(e -> loadGame());
-        menuItemQuitGame.setOnAction(e -> tryQuitGame());
+        menuItemQuitGame.setOnAction(e -> quitGame());
 
         menuBar = new MenuBar();
         menuBar.getMenus().add(menuGame);
@@ -254,39 +288,6 @@ public class TicTacToeGUIRunner extends Application {
         }
     }
 
-    private void startGame() {
-        if (computer.getGamesWon() != 0 || player.getGamesWon() != 0 || gameIsOn) {
-            if (!confirmAction("New game", "Do You really want to start new game?")) {
-                return;
-            }
-        }
-
-        computer = new Player("Computer", Sign.NOUGHT);
-        player = new Player(askForPlayerName(), Sign.CROSS);
-        numberOfRoundsToWin = askForNumberOfRounds();
-
-        Alert alert = new Alert(Alert.AlertType.NONE);
-        alert.setTitle("New Game");
-        alert.setHeaderText("Choose size of the board.");
-        Image logo = new Image("file:src/main/resources/TicTacToeLogo.png");
-        ImageView imageView = new ImageView(logo);
-        alert.setGraphic(imageView);
-
-        ButtonType buttonType3x3 = new ButtonType("3x3");
-        ButtonType buttonType10x10 = new ButtonType("10x10");
-
-        alert.getButtonTypes().setAll(buttonType3x3, buttonType10x10);
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent()) {
-            if (result.get().equals(buttonType3x3)) {
-                startGame3x3();
-            } else {
-                startGame10x10();
-            }
-        }
-    }
-
     private void updateStatusLabel() {
         gameStatusLabel.setText(player.getName() + ": " + player.getGamesWon() +
                 " Computer: " + computer.getGamesWon());
@@ -294,7 +295,7 @@ public class TicTacToeGUIRunner extends Application {
 
     private void createHBox() {
         hBox = new HBox();
-        hBox.setSpacing(20);
+        hBox.setSpacing(game.getTheBoard().length == 3 ? 10 : 20);
         hBox.setAlignment(Pos.CENTER_LEFT);
         hBox.getChildren().add(menuBar);
         gameStatusLabel = new Label();
@@ -357,21 +358,20 @@ public class TicTacToeGUIRunner extends Application {
 
     private void createGridPane() {
 
-        grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
-        grid.setHgap(10);
-        grid.setVgap(10);
-
         int boardSize = game.getTheBoard().length;
 
-        BackgroundImage backgroundImage;
-        if (boardSize == 3) {
-            backgroundImage = new BackgroundImage(board3Image, BackgroundRepeat.NO_REPEAT,
-                    BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
-        } else {
-            backgroundImage = new BackgroundImage(board10Image, BackgroundRepeat.NO_REPEAT,
-                    BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
-        }
+        grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        double gap = switch (boardSize) {
+            case 3 -> 20;
+            case 10 -> 10;
+            default -> 0;
+        };
+        grid.setHgap(gap);
+        grid.setVgap(gap);
+
+        BackgroundImage backgroundImage = new BackgroundImage(boardSize == 3 ? board3Image : board10Image,
+                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
         Background background = new Background(backgroundImage);
         grid.setBackground(background);
 
@@ -386,9 +386,9 @@ public class TicTacToeGUIRunner extends Application {
                     };
                 } else {
                     img = switch (game.getSignFromTheBoard(row, column)) {
-                        case BLANK -> new ImageView(signBLANK);
-                        case CROSS -> new ImageView(signCROSS);
-                        case NOUGHT -> new ImageView(signNOUGHT);
+                        case BLANK -> new ImageView(signBLANK10);
+                        case CROSS -> new ImageView(signCROSS10);
+                        case NOUGHT -> new ImageView(signNOUGHT10);
                     };
                 }
                 grid.add(img, column, row);
